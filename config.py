@@ -1,0 +1,56 @@
+import os
+import torch
+
+DATA_DIR = "dataset/"
+
+'''-----------------------------CIFAR10 Datset properties------------------------------'''
+CIFAR_10_DATASET_MEAN = [0.4914, 0.4822, 0.4465]
+CIFAR_10_DATASET_STANDARD_DEVIATION = [0.2470, 0.2435, 0.2616]
+
+'''--------------------Data Augmentation (Albumentation) properties--------------------'''
+
+#Horizontal Flip
+AUGMENTATION_HORIZONTAL_FLIP_PROB = 0.25
+
+#Cutout
+AUGMENTATION_CUTOUT_MAX_HOLES = 1
+AUGMENTATION_CUTOUT_MIN_HOLES = 1
+AUGMENTATION_CUTOUT_PROB = 0.5
+AUGMENTATION_CUTOUT_MAX_HEIGHT = 16  # 32/2
+AUGMENTATION_CUTOUT_MAX_WIDTH = 16  # 32/2
+AUGMENTATION_CUTOUT_MIN_HEIGHT = 16  # 32/2
+AUGMENTATION_CUTOUT_MIN_WIDTH = 16  # 32/2
+
+#Padding
+AUGMENTATION_PADDING_MIN_HEIGHT = 36
+AUGMENTATION_PADDING_MIN_WIDTH = 36
+
+#Random Crop
+AUGMENTATION_RANDOM_CROP_WIDTH = 32
+AUGMENTATION_RANDOM_CROP_HEIGHT = 32
+AUGMENTATION_RANDOM_CROP_ALWAYS_APPLY = False
+
+#Mask Fill Value
+AUGMENTATION_MASK_FILL_VALUE = None
+
+'''-----------------------------Model Hyperparameters------------------------------'''
+
+#Neural Network
+LEARNING_RATE = 0.01
+DROP_VALUE = 0.05
+
+#Normalization
+BATCH_NORMALIZATION = "BN"
+LAYER_NORMALIZATION = "LN"
+GROUP_NORMALIZATION = "GN"
+GROUP_SIZE = 1
+
+BATCH_SIZE = 512 if torch.cuda.is_available() else 64
+NUM_WORKERS = int(os.cpu_count() / 2)
+
+#Optimizer
+WEIGHT_DECAY = 5e-4
+STEPS_PER_EPOCH = 50000 // BATCH_SIZE
+
+NUM_EPOCHS = 24
+ACCELERATOR = "gpu"
