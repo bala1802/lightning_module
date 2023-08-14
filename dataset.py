@@ -27,10 +27,10 @@ class CIFAR10DataModule(pl.LightningDataModule):
         self.test_dataset = DATA_AUGMENTATION(data_dir=self.data_dir, batch_size=self.batch_size, train=False, 
                           transform=construct_transform_object(train=False))
         
-    def train_loader(self):
+    def train_dataloader(self):
         return DataLoader(self.train_dataset, batch_size=self.batch_size)
 
-    def test_loader(self):
+    def test_dataloader(self):
         return DataLoader(self.test_dataset, batch_size=self.batch_size)
 
 
