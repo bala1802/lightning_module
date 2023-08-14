@@ -9,8 +9,9 @@ from pytorch_lightning import LightningModule
 
 import config
 
+BATCH_SIZE = 512 if torch.cuda.is_available() else 64
+
 class LitResnet(LightningModule):
-    
     def __init__(self, lr=0.01, drop= 0.05, norm='BN',groupsize=1):
         super().__init__()
 
@@ -83,8 +84,8 @@ class LitResnet(LightningModule):
         elif norm == 'LN':
             return nn.GroupNorm(1,channels) #(equivalent with LayerNorm)
         elif norm == 'GN':
-            return nn.GroupNorm(2,channels) #groups=2
-    
+            return nn.GroupNorm(groupsize,channels) #groups=2
+
     def forward(self, x):
 
         x = self.convblock1(x)
@@ -94,7 +95,6 @@ class LitResnet(LightningModule):
         x = x + self.res2 (x)
         x = self.convblock4(x)
         x = x.view(-1, 10)
-
         return F.log_softmax(x, dim=-1)
 
     def training_step(self, batch, batch_idx):
@@ -114,28 +114,29 @@ class LitResnet(LightningModule):
         if stage:
             self.log(f"{stage}_loss", loss, prog_bar=True)
             self.log(f"{stage}_acc", acc, prog_bar=True)
-    
+
+    def validation_step(self, batch, batch_idx):
+        self.evaluate(batch, "val")
+
     def test_step(self, batch, batch_idx):
         self.evaluate(batch, "test")
-    
+
     def configure_optimizers(self):
         optimizer = torch.optim.Adam(
             self.parameters(),
-            lr=self.lr,
-            weight_decay=config.WEIGHT_DECAY,
+            lr=self.hparams.lr,
+            weight_decay=5e-4,
         )
+
+        steps_per_epoch = 50000 // BATCH_SIZE
 
         scheduler_dict = {
             "scheduler": OneCycleLR(
                 optimizer,
                 self.lr,
                 epochs=self.trainer.max_epochs,
-                steps_per_epoch=config.STEPS_PER_EPOCH
+                steps_per_epoch=steps_per_epoch,
             ),
-            "interval": "step"
+            "interval": "step",
         }
-
-        return {"optimizer":optimizer, "lr_scheduler": scheduler_dict}
-    
-
-
+        return {"optimizer": optimizer, "lr_scheduler": scheduler_dict}
