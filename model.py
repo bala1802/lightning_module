@@ -11,7 +11,7 @@ import config
 
 class LitResnet(LightningModule):
     
-    def __init__(self, learning_rate=config.LEARNING_RATE, drop=config.DROP_VALUE, 
+    def __init__(self, lr=config.LEARNING_RATE, drop=config.DROP_VALUE, 
                  norm=config.BATCH_NORMALIZATION, groupsize=config.GROUP_SIZE):
         
         super().__init__()
@@ -19,7 +19,7 @@ class LitResnet(LightningModule):
         self.save_hyperparameters()
 
         self.num_classes =10
-        self.lr = learning_rate
+        self.lr = lr
         self.drop = drop
         self.normalization=norm
         self.groupsize = groupsize
@@ -128,7 +128,7 @@ class LitResnet(LightningModule):
     def configure_optimizers(self):
         optimizer = torch.optim.Adam(
             self.parameters(),
-            lr=self.hparams.lr,
+            lr=self.lr,
             weight_decay=config.WEIGHT_DECAY,
         )
 
