@@ -22,9 +22,9 @@ class CIFAR10DataModule(pl.LightningDataModule):
         datasets.CIFAR10(self.data_dir, train=False, download=True)
     
     def setup(self, stage=None):
-        self.train_dataset = DATA_AUGMENTATION(data_dir=self.data_dir, batch_size=self.batch_size, train=True, 
+        self.train_dataset = DATA_AUGMENTATION(data_dir=self.data_dir, train=True, 
                           transform=construct_transform_object(train=True))
-        self.test_dataset = DATA_AUGMENTATION(data_dir=self.data_dir, batch_size=self.batch_size, train=False, 
+        self.test_dataset = DATA_AUGMENTATION(data_dir=self.data_dir, train=False, 
                           transform=construct_transform_object(train=False))
         
     def train_dataloader(self):
