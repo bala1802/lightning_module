@@ -12,7 +12,7 @@ import config
 class LitResnet(LightningModule):
     
     def __init__(self, lr=config.LEARNING_RATE, drop=config.DROP_VALUE, 
-                 norm=config.BATCH_NORMALIZATION, groupsize=config.GROUP_SIZE):
+                 norm=config.BATCH_NORMALIZATION, groupsize=1):
         
         super().__init__()
 
@@ -22,26 +22,25 @@ class LitResnet(LightningModule):
         self.lr = lr
         self.drop = drop
         self.normalization=norm
-        self.groupsize = groupsize
-
+        
         self.convblock1 = nn.Sequential(
             nn.Conv2d(in_channels=3, out_channels=64, kernel_size=(3, 3), padding=1, bias=False),
             nn.ReLU(),
-            self.user_norm(self.normalization,64,self.groupsize),
+            self.user_norm(self.normalization,64,groupsize),
             nn.Dropout(self.drop),
             nn.Conv2d(in_channels=64, out_channels=128, kernel_size=(3, 3), padding=1, bias=False),
             nn.MaxPool2d(2,2),
             nn.ReLU(),
-            self.user_norm(self.normalization,128,self.groupsize),
+            self.user_norm(self.normalization,128,groupsize),
             nn.Dropout(self.drop))
         self.res1 = nn.Sequential(
             nn.Conv2d(in_channels=128, out_channels=128, kernel_size=(3, 3), padding=1, bias=False),
             nn.ReLU(),
-            self.user_norm(self.normalization,128,self.groupsize),
+            self.user_norm(self.normalization,128,groupsize),
             nn.Dropout(self.drop),
             nn.Conv2d(in_channels = 128, out_channels=128, kernel_size=(3, 3), padding=1, bias=False),
             nn.ReLU(),
-            self.user_norm(self.normalization,128,self.groupsize),
+            self.user_norm(self.normalization,128,groupsize),
             nn.Dropout(self.drop)
              )
 
@@ -50,11 +49,11 @@ class LitResnet(LightningModule):
         self.convblock2 = nn.Sequential(
             nn.Conv2d(in_channels=128, out_channels=256, kernel_size=(3, 3), padding=1, bias=False),
             nn.ReLU(),
-            self.user_norm(self.normalization,256,self.groupsize),
+            self.user_norm(self.normalization,256,groupsize),
             nn.Dropout(self.drop),
 	        nn.MaxPool2d(2,2),
             nn.ReLU(),
-            self.user_norm(self.normalization,256,self.groupsize),
+            self.user_norm(self.normalization,256,groupsize),
             nn.Dropout(self.drop)
 
              )
@@ -64,17 +63,17 @@ class LitResnet(LightningModule):
             nn.Conv2d(in_channels=256, out_channels=512, kernel_size=(3, 3), padding=1, bias=False),
 	        nn.MaxPool2d(2,2),
             nn.ReLU(),
-            self.user_norm(self.normalization,512,self.groupsize),
+            self.user_norm(self.normalization,512,groupsize),
             nn.Dropout(self.drop)
             )
         self.res2 = nn.Sequential(
             nn.Conv2d(in_channels=512, out_channels=512, kernel_size=(3, 3), padding=1, bias=False),
             nn.ReLU(),
-            self.user_norm(self.normalization,512,self.groupsize),
+            self.user_norm(self.normalization,512,groupsize),
             nn.Dropout(self.drop),
             nn.Conv2d(in_channels = 512, out_channels=512, kernel_size=(3, 3), padding=1, bias=False),
             nn.ReLU(),
-            self.user_norm(self.normalization,512,self.groupsize),
+            self.user_norm(self.normalization,512,groupsize),
             nn.Dropout(self.drop))
 
         # CONVOLUTION BLOCK 4
