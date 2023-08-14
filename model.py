@@ -83,7 +83,7 @@ class LitResnet(LightningModule):
         elif norm == 'LN':
             return nn.GroupNorm(1,channels) #(equivalent with LayerNorm)
         elif norm == 'GN':
-            return nn.GroupNorm(groupsize,channels) #groups=2
+            return nn.GroupNorm(2,channels) #groups=2
     
     def forward(self, x):
 
