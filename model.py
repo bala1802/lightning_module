@@ -11,37 +11,32 @@ import config
 
 class LitResnet(LightningModule):
     
-    def __init__(self, lr=config.LEARNING_RATE, drop=config.DROP_VALUE, 
-                 norm=config.BATCH_NORMALIZATION, groupsize=1):
-        
+    def __init__(self, lr=0.01, drop= 0.05, norm='BN',groupsize=1):
         super().__init__()
 
         self.save_hyperparameters()
-
         self.num_classes =10
         self.lr = lr
-        self.drop = drop
-        self.normalization=norm
-        
+
         self.convblock1 = nn.Sequential(
             nn.Conv2d(in_channels=3, out_channels=64, kernel_size=(3, 3), padding=1, bias=False),
             nn.ReLU(),
-            self.user_norm(self.normalization,64,groupsize),
-            nn.Dropout(self.drop),
+            self.user_norm(norm,64,groupsize),
+            nn.Dropout(drop),
             nn.Conv2d(in_channels=64, out_channels=128, kernel_size=(3, 3), padding=1, bias=False),
             nn.MaxPool2d(2,2),
             nn.ReLU(),
-            self.user_norm(self.normalization,128,groupsize),
-            nn.Dropout(self.drop))
+            self.user_norm(norm,128,groupsize),
+            nn.Dropout(drop))
         self.res1 = nn.Sequential(
             nn.Conv2d(in_channels=128, out_channels=128, kernel_size=(3, 3), padding=1, bias=False),
             nn.ReLU(),
-            self.user_norm(self.normalization,128,groupsize),
-            nn.Dropout(self.drop),
+            self.user_norm(norm,128,groupsize),
+            nn.Dropout(drop),
             nn.Conv2d(in_channels = 128, out_channels=128, kernel_size=(3, 3), padding=1, bias=False),
             nn.ReLU(),
-            self.user_norm(self.normalization,128,groupsize),
-            nn.Dropout(self.drop)
+            self.user_norm(norm,128,groupsize),
+            nn.Dropout(drop)
              )
 
         # CONVOLUTION BLOCK 2
@@ -49,12 +44,12 @@ class LitResnet(LightningModule):
         self.convblock2 = nn.Sequential(
             nn.Conv2d(in_channels=128, out_channels=256, kernel_size=(3, 3), padding=1, bias=False),
             nn.ReLU(),
-            self.user_norm(self.normalization,256,groupsize),
-            nn.Dropout(self.drop),
+            self.user_norm(norm,256,groupsize),
+            nn.Dropout(drop),
 	        nn.MaxPool2d(2,2),
             nn.ReLU(),
-            self.user_norm(self.normalization,256,groupsize),
-            nn.Dropout(self.drop)
+            self.user_norm(norm,256,groupsize),
+            nn.Dropout(drop)
 
              )
 
@@ -63,18 +58,18 @@ class LitResnet(LightningModule):
             nn.Conv2d(in_channels=256, out_channels=512, kernel_size=(3, 3), padding=1, bias=False),
 	        nn.MaxPool2d(2,2),
             nn.ReLU(),
-            self.user_norm(self.normalization,512,groupsize),
-            nn.Dropout(self.drop)
+            self.user_norm(norm,512,groupsize),
+            nn.Dropout(drop)
             )
         self.res2 = nn.Sequential(
             nn.Conv2d(in_channels=512, out_channels=512, kernel_size=(3, 3), padding=1, bias=False),
             nn.ReLU(),
-            self.user_norm(self.normalization,512,groupsize),
-            nn.Dropout(self.drop),
+            self.user_norm(norm,512,groupsize),
+            nn.Dropout(drop),
             nn.Conv2d(in_channels = 512, out_channels=512, kernel_size=(3, 3), padding=1, bias=False),
             nn.ReLU(),
-            self.user_norm(self.normalization,512,groupsize),
-            nn.Dropout(self.drop))
+            self.user_norm(norm,512,groupsize),
+            nn.Dropout(drop))
 
         # CONVOLUTION BLOCK 4
         self.convblock4 = nn.Sequential(
@@ -82,14 +77,13 @@ class LitResnet(LightningModule):
             nn.Conv2d(in_channels=512, out_channels=10, kernel_size=(1, 1), padding=0, bias=False))
         self.model = nn.Sequential(self.convblock1 ,self.convblock2, self.convblock3, self.convblock4)
 
-    def user_norm(self, norm, channels, groupsize=1):
-
-        if norm == config.BATCH_NORMALIZATION:
+    def user_norm(self, norm, channels,groupsize=1):
+        if norm == 'BN':
             return nn.BatchNorm2d(channels)
-        elif norm == config.LAYER_NORMALIZATION:
-            return nn.GroupNorm(1, channels)
-        elif norm == config.GROUP_NORMALIZATION:
-            return nn.GroupNorm(groupsize, channels)
+        elif norm == 'LN':
+            return nn.GroupNorm(1,channels) #(equivalent with LayerNorm)
+        elif norm == 'GN':
+            return nn.GroupNorm(groupsize,channels) #groups=2
     
     def forward(self, x):
 
