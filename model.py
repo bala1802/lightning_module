@@ -62,6 +62,7 @@ class LitResnet(LightningModule):
             self.user_norm(norm,512,groupsize),
             nn.Dropout(drop)
             )
+        print("Next res2 construction")
         self.res2 = nn.Sequential(
             nn.Conv2d(in_channels=512, out_channels=512, kernel_size=(3, 3), padding=1, bias=False),
             nn.ReLU(),
@@ -72,6 +73,7 @@ class LitResnet(LightningModule):
             self.user_norm(norm,512,groupsize),
             nn.Dropout(drop))
 
+        print("Next block4 construction")
         # CONVOLUTION BLOCK 4
         self.convblock4 = nn.Sequential(
             nn.MaxPool2d(kernel_size=4),
