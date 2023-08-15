@@ -32,7 +32,7 @@ class CIFAR10DataModule(pl.LightningDataModule):
                                               transforms.RandomVerticalFlip(),
                                               transforms.RandomHorizontalFlip(),
                                               transforms.ToTensor()]))
-        self.train_dataset = datasets.CIFAR10(self.data_dir, train=False, download=False,
+        self.test_dataset = datasets.CIFAR10(self.data_dir, train=False, download=False,
                                               transform=transforms.ToTensor())
         
     def train_dataloader(self):
