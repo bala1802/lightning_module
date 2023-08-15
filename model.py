@@ -22,21 +22,21 @@ class LitResnet(LightningModule):
         self.convblock1 = nn.Sequential(
             nn.Conv2d(in_channels=3, out_channels=64, kernel_size=(3, 3), padding=1, bias=False),
             nn.ReLU(),
-            self.user_norm(norm,64,groupsize),
+            # self.user_norm(norm,64,groupsize),
             nn.Dropout(drop),
             nn.Conv2d(in_channels=64, out_channels=128, kernel_size=(3, 3), padding=1, bias=False),
             nn.MaxPool2d(2,2),
             nn.ReLU(),
-            self.user_norm(norm,128,groupsize),
+            # self.user_norm(norm,128,groupsize),
             nn.Dropout(drop))
         self.res1 = nn.Sequential(
             nn.Conv2d(in_channels=128, out_channels=128, kernel_size=(3, 3), padding=1, bias=False),
             nn.ReLU(),
-            self.user_norm(norm,128,groupsize),
+            # self.user_norm(norm,128,groupsize),
             nn.Dropout(drop),
             nn.Conv2d(in_channels = 128, out_channels=128, kernel_size=(3, 3), padding=1, bias=False),
             nn.ReLU(),
-            self.user_norm(norm,128,groupsize),
+            # self.user_norm(norm,128,groupsize),
             nn.Dropout(drop)
              )
 
@@ -45,11 +45,11 @@ class LitResnet(LightningModule):
         self.convblock2 = nn.Sequential(
             nn.Conv2d(in_channels=128, out_channels=256, kernel_size=(3, 3), padding=1, bias=False),
             nn.ReLU(),
-            self.user_norm(norm,256,groupsize),
+            # self.user_norm(norm,256,groupsize),
             nn.Dropout(drop),
 	        nn.MaxPool2d(2,2),
             nn.ReLU(),
-            self.user_norm(norm,256,groupsize),
+            # self.user_norm(norm,256,groupsize),
             nn.Dropout(drop)
 
              )
@@ -59,21 +59,20 @@ class LitResnet(LightningModule):
             nn.Conv2d(in_channels=256, out_channels=512, kernel_size=(3, 3), padding=1, bias=False),
 	        nn.MaxPool2d(2,2),
             nn.ReLU(),
-            self.user_norm(norm,512,groupsize),
+            # self.user_norm(norm,512,groupsize),
             nn.Dropout(drop)
             )
-        print("Next res2 construction")
+        
         self.res2 = nn.Sequential(
             nn.Conv2d(in_channels=512, out_channels=512, kernel_size=(3, 3), padding=1, bias=False),
             nn.ReLU(),
-            self.user_norm(norm,512,groupsize),
+            # self.user_norm(norm,512,groupsize),
             nn.Dropout(drop),
             nn.Conv2d(in_channels = 512, out_channels=512, kernel_size=(3, 3), padding=1, bias=False),
             nn.ReLU(),
-            self.user_norm(norm,512,groupsize),
+            # self.user_norm(norm,512,groupsize),
             nn.Dropout(drop))
 
-        print("Next block4 construction")
         # CONVOLUTION BLOCK 4
         self.convblock4 = nn.Sequential(
             nn.MaxPool2d(kernel_size=4),
