@@ -46,7 +46,8 @@ GROUP_NORMALIZATION = "GN"
 GROUP_SIZE = 1
 
 BATCH_SIZE = 512 if torch.cuda.is_available() else 64
-NUM_WORKERS = int(os.cpu_count() / 2)
+# NUM_WORKERS = int(os.cpu_count() / 2)
+NUM_WORKERS = 4
 
 #Optimizer
 WEIGHT_DECAY = 5e-4
