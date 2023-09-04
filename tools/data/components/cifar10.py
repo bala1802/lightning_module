@@ -1,3 +1,14 @@
+'''
+Author Name: Balaguru Sivasambagupta
+Autor Email ID: bala1802@live.com
+Github: https://github.com/bala1802
+'''
+
+'''
+Purpose of this Script:
+    - This script will apply data augmentation techniues like `Albumentation` on the dataset
+'''
+
 from typing import Any, List, Tuple
 
 import albumentations as A
@@ -6,6 +17,15 @@ import torch
 from albumentations.pytorch import ToTensorV2
 from torch.utils.data import Dataset
 
+'''
+This method will apply augmentation and transforms the image for the configured augmentation techniques
+In this script , we have applied:
+    - `Crop and Pad`
+    - `Random Crop
+    - `Horizontal Flip`
+    - `Cut out`
+After applying the augmentation techniques, the augmented data is normalized
+'''
 def make_transform(image_set: str) -> A.Compose:
     mean = (0.49139968, 0.48215841, 0.44653091)
     std = (0.24703223, 0.24348513, 0.26158784)
@@ -34,7 +54,10 @@ def make_transform(image_set: str) -> A.Compose:
                 ToTensorV2(),
             ]
         )
-    
+
+'''
+TODO
+'''
 class CIFAR10(Dataset):
     def __init__(self, ds: Any, transform: A.Compose):
         self.ds = ds
