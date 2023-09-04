@@ -4,6 +4,9 @@ import torch.nn.functional as F
 
 from .common import BaseNet
 
+'''
+Defining the Residual Network block, which will be plugged-in the places wherever needed
+'''
 class ResBlock(nn.Module):
     def __init__(self, in_planes: int, out_planes: int, stride: int = 1, drop: float = 0) -> None:
         super().__init__()
