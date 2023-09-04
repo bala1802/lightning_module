@@ -38,7 +38,8 @@ class ResBlock(nn.Module):
         out = self.dropout(out)
 
         return out
-    
+
+
 class CustomResNet(BaseNet):
     def __init__(self, drop: float = 0, num_classes: int = 10) -> None:
         super().__init__()
