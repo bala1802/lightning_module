@@ -1,6 +1,4 @@
 '''
-Author Name: Balaguru Sivasambagupta
-Autor Email ID: bala1802@live.com
 Github: https://github.com/bala1802
 '''
 

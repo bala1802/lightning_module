@@ -1,3 +1,12 @@
+'''
+Github: https://github.com/bala1802
+'''
+
+'''
+Purpose of this Script:
+    - A LightningModule, wrapped for the Neural Network (built based on the ResNet architecture)
+'''
+
 from typing import Any, Optional, Tuple
 
 import torch
