@@ -56,7 +56,9 @@ def make_transform(image_set: str) -> A.Compose:
         )
 
 '''
-TODO
+This class is responsible for applying the received `transform` object on the each record present in the `ds` (dataset)
+    - `ds` - The dataset received from the module. It can be `train`, `test` or `validation` dataset
+    - `transform` - The Albumentation based instance, which has multiple augmentation techniques
 '''
 class CIFAR10(Dataset):
     def __init__(self, ds: Any, transform: A.Compose):
