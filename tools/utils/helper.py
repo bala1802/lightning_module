@@ -1,3 +1,12 @@
+'''
+Github: https://github.com/bala1802
+'''
+
+'''
+Purpose of this Script:
+    - Helper script to find the Learning Rate and fit the model
+'''
+
 import os
 from typing import Any, Tuple
 
